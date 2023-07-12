@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <th:block th:include="template.html :: head"></th:block>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <h2>Welcome to home page</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <fieldset class="border p-2">
+          <legend class="w-auto">Search</legend>
+          <form action="home/findBookByPressmark" method="GET">
+            <div class="form-group">
+              <label for="searchType">Search by:</label>
+              <select class="form-control" id="searchType" name="searchType">
+                <option value="pressmark">Pressmark</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="searchValue">Search Value:</label>
+              <input type="text" class="form-control" id="searchValue" name="searchValue" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Find Book</button>
+            <div th:if="${books}">
+              <p>Book Information</p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Pressmark</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="book : ${books}">
+                    <td th:text="${book.title}"></td>
+                    <td><span th:each="author : ${book.authors}" th:text="${author.name}"></span></td>
+                    <td th:text="${book.pressmark}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p th:unless="${books}">No book found.</p>
+          </form>
+        </fieldset>
+      </div>
+      <div class="col-md-6">
+        <div class="text-right">
+          <fieldset class="border p-2">
+            <legend class="w-auto">Statistics</legend>
+            <p class="mb-2">Total Readers in Library: <span th:text="${readersCount}"></span></p>
+            <p class="mb-2">Users Readers 20 Years Old: <span th:text="${youngReadersCount}"></span></p>
+            <h2>Books with two copies that are assigned</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Book Name</th>
+                  <th>Reader</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="book : ${books2Copy}">
+                  <td th:text="${book.title}"></td>
+                  <td th:text="${book.reader != null and book.reader.surname != null ? book.reader.surname : ''}"></td>
+                  <td th:text="${book.pressmark}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/readers">Readers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/books">Books</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="readers/assignBook">Book Management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</body>
+
+</html>

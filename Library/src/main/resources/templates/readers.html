@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <h2 style="margin-top: 10px; margin-bottom: 20px;" class="col text-center">Readers</h2>
+    <div class="container" style="height: 300px; overflow-y: scroll;">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Surname</th>
+                    <th>Date of birth</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Education</th>
+                    <th>Reading card</th>
+                    <th>Science degree</th>
+                    <th>Books</th>
+                    <th>Reading room</th>
+                    <th>Passport ID</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="reader : ${readers}">
+                    <td th:text="${reader.surname}"></td>
+                    <td th:text="${reader.dateOfBirth}"></td>
+                    <td th:text="${reader.address}"></td>
+                    <td th:text="${reader.phone}"></td>
+                    <td th:text="${reader.education}"></td>
+                    <td th:text="${reader.readingCard}"></td>
+                    <td th:text="${reader.scienceDegree}"></td>
+                    <td><span th:each="book, status : ${reader.books}">
+                            <span th:text="${book.title}"></span>
+                            <span th:utext="${status.last ? '' : ','}"></span></span>
+                    </td>
+                    <td th:text="${reader.readingRoom.getName()}"></td>
+                    <td th:text="${reader.passport_id}"></td>
+                    <td th:text="${reader.age}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col">
+            <fieldset class="border p-2 w-100">
+                <legend class="w-auto">Add new reader</legend>
+                <form method="POST" th:action="@{/readers}">
+                    <table>
+                        <tr>
+                            <td><label for="surname">Surname:</label></td>
+                            <td><input type="text" id="surname" name="surname" required></td>
+                            <td><label for="dateOfBirth">Date of birth:</label></td>
+                            <td><input type="date" id="dateOfBirth" name="dateOfBirth" required></td>
+                            <label for="readingRoomId">Reading Room:</label>
+                            <select id="readingRoomId" name="readingRoomId">
+                                <option th:each="room : ${readingRooms}" th:value="${room.reading_room_id}"
+                                    th:text="${room.name}"></option>
+                            </select><br>
+                        </tr>
+                        <tr>
+                            <td><label for="address">Address:</label></td>
+                            <td><input type="text" id="address" name="address" required></td>
+                            <td><label for="phone">Phone:</label></td>
+                            <td><input type="text" id="phone" name="phone" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="education">Education:</label></td>
+                            <td><input type="text" id="education" name="education" required></td>
+                            <td><label for="readingCard">Reading card:</label></td>
+                            <td><input type="text" id="readingCard" name="readingCard" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="scienceDegree">Science degree:</label></td>
+                            <td><input type="text" id="scienceDegree" name="scienceDegree" required></td>
+                            <td><label for="passport_id">Passport ID:</label></td>
+                            <td><input type="text" id="passport_id" name="passport_id" required></td>
+                            <td><label for="age">Age:</label></td>
+                            <td><input type="text" id="age" name="age" required></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </form>
+            </fieldset>
+        </div>
+        <div class="col">
+            <fieldset class="border p-2 w-100">
+                <legend class="w-auto">Filter</legend>
+                <form action="/readers/filter" method="get" class="form-inline mb-4">
+                    <div class="form-group mr-2">
+                        <label for="filterType">Filter Type:</label>
+                        <select id="filterType" name="filterType" class="form-control">
+                            <option value="age" selected>Age</option>
+                            <option value="name">Name</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-2">
+                        <label for="filterValue">Filter Value:</label>
+                        <input type="text" id="filterValue" name="filterValue" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-dark">Apply Filter</button>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/readers/assignBook">Books-Management</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+
+</html>

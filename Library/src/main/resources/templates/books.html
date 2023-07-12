@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Books Management</title>
+</head>
+
+<body>
+    <h2 style="margin-top: 10px; margin-bottom: 20px;" class="col text-center">Books</h2>
+    <div class="container" style="height: 300px; overflow-y: scroll;">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publication year</th>
+                    <th>Pressmark</th>
+                    <th>Reader</th>
+                    <th>Date of assigning</th>
+                    <th>Publishing House</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="book, rowStat : ${books}">
+                    <td th:text="${book.title}"></td>
+                    <td><span th:each="author : ${book.authors}" th:text="${author.name}"></span></td>
+                    <td th:text="${book.year}"></td>
+                    <td th:text="${book.pressmark}"></td>
+                    <td th:text="${book.reader?.surname}"></td>
+                    <td th:text="${book.dateOfAssigning}"></td>
+                    <td th:text="${book.publishingHouse.getName()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col" >
+            <fieldset class="border p-2 w-100" >
+                <legend class="w-auto">Add new book</legend>
+                <form method="POST" th:action="@{/books}" >
+                    <table >
+                        <tr>
+                            <td><label for="title">Title:</label></td>
+                            <td><input type="text" id="title" name="title" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="authors">Author:</label></td>
+                            <td><input type="text" id="authors" name="authors" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="publicationYear">Publication Year:</label></td>
+                            <td><input type="number" id="publicationYear" name="publicationYear" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="pressmark">Pressmark:</label></td>
+                            <td><input type="text" id="pressmark" name="pressmark" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="publicationHouse">Publication house:</label></td>
+                            <td><input type="text" id="publicationHouse" name="publicationHouse" required></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit">Submit</button>
+                </form>
+            </fieldset>
+        </div>
+        <div class="col h-100" >
+            <fieldset class="border p-2">
+                <legend class="w-auto">Delete book by title</legend>
+            <form th:action="@{/books/delete}" th:method="post">
+                <label for="deltitle">Enter Book Title:</label>
+                <input type="text" id="deltitle" name="deltitle" required />
+                <button type="submit">Delete</button>
+            </form>
+            </fieldset>
+        </div>
+        </div>
+        <div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/readers">Readers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/readers/assignBook">Books-Management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+</body>
+
+</html>
